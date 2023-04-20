@@ -39,5 +39,5 @@ def plot_posterior(heads, tails, alpha, beta, ax=None):
     plt.show()
 
 
-# 
+# Compute and plot posterior
 plot_posterior(heads=1, tails=12, alpha=2, beta=2)
