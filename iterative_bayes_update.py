@@ -10,26 +10,25 @@ beta = 2
 
 # Compute Prior
 x = np.linspace(0, 1, 1000) # x-axis sample points
-y = scipy.stats.beta.pdf(x, alpha, beta) # Prior
+y = scipy.stats.beta.pdf(x, alpha, beta) # Initial prior
 
 # Let theta be the odds that Team A beats an average opponent
 # Liklihood functions - One for if the team wins, and one for if the team loses
 def win_liklihood(theta):
     return theta 
-
 def loss_liklihood(theta):
     return 1 - theta
 
-# This should be the factor that makes our probability one
+# Compute denominator that makes the resulting prior integrate to 1
 def compute_marginal(xx, liklihood, prior):
     return scipy.integrate.simps(np.multiply(liklihood, prior), x = xx)
 
-# Update the prior 
+# Update the prior with Bayes 
 def compute_posterior(xx, liklihood, prior):
     return np.multiply(liklihood, prior) / compute_marginal(xx, liklihood, prior)
 
 
-# Check to make sure the posterior integrates to 1
+# Check to make sure the posterior integrates to (appoximatley) 1
 def check_is_pdf(xx, posterior):
     I = scipy.integrate.simps(posterior, x = xx)
     if abs(I-1) < 1e-15:
@@ -37,28 +36,33 @@ def check_is_pdf(xx, posterior):
     else:
         return False
 
-# One Baysian update step where win is a boolean 
-# True if team won
-# False if team lost
+# One Baysian update step where win is a boolean \
+# win:
+#   True if team won
+#   False if team lost
 def compute_posterior_step(x, y, win):
     if win:
         return compute_posterior(x, win_liklihood(x), y)
     else:
         return compute_posterior(x, loss_liklihood(x), y)
 
-# Compute the posterior iteratively if the team loses losses games and wins wins games
-def update_prior(x, prior, wins, losses):
+# Compute the posterior iteratively if the team loses l games and wins w games
+def update_prior(x, prior, w, l):
     posterior = prior
-    for i in range(wins):
+    for i in range(w):
         posterior = compute_posterior_step(x, posterior, True)
-    for i in range(losses):
+    for i in range(l):
         posterior = compute_posterior_step(x, posterior, False)
     return posterior
 
+# Compute posteior distribution after a team wins 1 game and loses 10
 y = update_prior(x, y, 1, 10)
 
 # Plot the posterior
 plt.plot(x, y)
+plt.xlabel(r"$\theta$", fontsize=15)
+plt.ylabel(r"$P(\theta)$", fontsize=15)
+plt.title("Distribution after {} wins and {} loses".format(1,10));
 
 # Show plot
 plt.show()
