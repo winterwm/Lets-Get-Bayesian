@@ -62,7 +62,7 @@ y = update_prior(x, y, 1, 10)
 plt.plot(x, y)
 plt.xlabel(r"$\theta$", fontsize=15)
 plt.ylabel(r"$P(\theta)$", fontsize=15)
-plt.title("Distribution after {} wins and {} loses".format(1,10));
+plt.title("Distribution after {} win(s) and {} lose(s)".format(1,10));
 
 # Show plot
 plt.show()
