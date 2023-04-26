@@ -6,7 +6,7 @@ N = 10 # Number of teams
 
 rounds = 3 # Number of times everyone plays everyone
 
-matchups = rounds*(int(N**2)) # Total number of games
+matchups = rounds*(int(N**2)) # Total number of mathups
 
 # Team records: W - L
 records = np.zeros((N, 2))
@@ -19,6 +19,7 @@ quality = range(N) # For now, quality will just be the teams index
 for i in range(matchups):
     team_A = int(i / (N)) % (N)
     team_B = i % (N)
+    # Skip if team_A is team_B since teams cant play themselves
     if team_A != team_B:
         # Lower indexed team will be team A, higher will be B
         score_A = quality[team_A]
