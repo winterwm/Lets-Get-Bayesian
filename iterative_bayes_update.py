@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 
 # Numerically performs one Baysian update
 
-# Parameters for the Beta distribution:
-alpha = 2 
-beta = 2
+def generate_prior():
+    # Parameters for the Beta distribution:
+    alpha = 2 
+    beta = 2
 
-# Compute Prior
-x = np.linspace(0, 1, 1000) # x-axis sample points
-y = scipy.stats.beta.pdf(x, alpha, beta) # Initial prior
+    # Compute Prior
+    x = np.linspace(0, 1, 1000) # x-axis sample points
+    y = scipy.stats.beta.pdf(x, alpha, beta) # Initial prior
+    return x, y
 
 # Let theta be the odds that Team A beats an average opponent
 # Liklihood functions - One for if the team wins, and one for if the team loses
@@ -55,14 +57,17 @@ def update_prior(x, prior, w, l):
         posterior = compute_posterior_step(x, posterior, False)
     return posterior
 
-# Compute posteior distribution after a team wins 1 game and loses 10
-y = update_prior(x, y, 1, 10)
 
-# Plot the posterior
-plt.plot(x, y)
-plt.xlabel(r"$\theta$", fontsize=15)
-plt.ylabel(r"$P(\theta)$", fontsize=15)
-plt.title("Distribution after {} win(s) and {} lose(s)".format(1,10));
+# x, y = generate_prior()
 
-# Show plot
-plt.show()
+# # Compute posteior distribution after a team wins 1 game and loses 10
+# y = update_prior(x, y, 1, 10)
+
+# # Plot the posterior
+# plt.plot(x, y)
+# plt.xlabel(r"$\theta$", fontsize=15)
+# plt.ylabel(r"$P(\theta)$", fontsize=15)
+# plt.title("Distribution after {} win(s) and {} lose(s)".format(1,10));
+
+# # Show plot
+# plt.show()
